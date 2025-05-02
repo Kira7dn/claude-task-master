@@ -158,7 +158,10 @@ async function runTests() {
 
 		try {
 			const smallResult = execSync(
-				`node ${path.join(__dirname, 'dev.js')} parse-prd --input=${smallPRDPath} --tasks=5`,
+				`node ${path.join(
+					__dirname,
+					'dev.js'
+				)} parse-prd --input=${smallPRDPath} --tasks=5`,
 				{
 					stdio: 'inherit'
 				}
@@ -179,7 +182,10 @@ async function runTests() {
 
 		try {
 			const mediumResult = execSync(
-				`node ${path.join(__dirname, 'dev.js')} parse-prd --input=${mediumPRDPath} --tasks=15`,
+				`node ${path.join(
+					__dirname,
+					'dev.js'
+				)} parse-prd --input=${mediumPRDPath} --tasks=15`,
 				{
 					stdio: 'inherit'
 				}
@@ -200,7 +206,10 @@ async function runTests() {
 
 		try {
 			const largeResult = execSync(
-				`node ${path.join(__dirname, 'dev.js')} parse-prd --input=${largePRDPath} --tasks=25`,
+				`node ${path.join(
+					__dirname,
+					'dev.js'
+				)} parse-prd --input=${largePRDPath} --tasks=25`,
 				{
 					stdio: 'inherit'
 				}

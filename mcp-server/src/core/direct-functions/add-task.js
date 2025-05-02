@@ -83,10 +83,10 @@ export async function addTaskDirect(args, log, context = {}) {
 		const taskDependencies = Array.isArray(dependencies)
 			? dependencies
 			: dependencies
-				? String(dependencies)
-						.split(',')
-						.map((id) => parseInt(id.trim(), 10))
-				: [];
+			? String(dependencies)
+					.split(',')
+					.map((id) => parseInt(id.trim(), 10))
+			: [];
 		const taskPriority = priority || 'medium';
 
 		// Extract context parameters for advanced functionality
@@ -104,7 +104,11 @@ export async function addTaskDirect(args, log, context = {}) {
 			};
 
 			log.info(
-				`Adding new task manually with title: "${args.title}", dependencies: [${taskDependencies.join(', ')}], priority: ${priority}`
+				`Adding new task manually with title: "${
+					args.title
+				}", dependencies: [${taskDependencies.join(
+					', '
+				)}], priority: ${priority}`
 			);
 
 			// Call the addTask function with manual task data
@@ -135,7 +139,9 @@ export async function addTaskDirect(args, log, context = {}) {
 		} else {
 			// AI-driven task creation
 			log.info(
-				`Adding new task with prompt: "${prompt}", dependencies: [${taskDependencies.join(', ')}], priority: ${priority}`
+				`Adding new task with prompt: "${prompt}", dependencies: [${taskDependencies.join(
+					', '
+				)}], priority: ${priority}`
 			);
 
 			// Initialize AI client with session environment

@@ -58,7 +58,9 @@ function displayBanner() {
 	console.log(
 		boxen(
 			chalk.white(
-				`${chalk.bold('Version:')} ${version}   ${chalk.bold('Project:')} ${CONFIG.projectName}`
+				`${chalk.bold('Version:')} ${version}   ${chalk.bold('Project:')} ${
+					CONFIG.projectName
+				}`
 			),
 			{
 				padding: 1,
@@ -109,7 +111,7 @@ function createProgressBar(percent, length = 30, statusBreakdown = null) {
 				percent +
 					(statusBreakdown.deferred || 0) +
 					(statusBreakdown.cancelled || 0)
-			)
+		  )
 		: percent;
 
 	// Calculate how many characters to fill for "true completion"
@@ -211,11 +213,13 @@ function createProgressBar(percent, length = 30, statusBreakdown = null) {
 		percent === 100
 			? chalk.hex('#006400') // Dark green for 100%
 			: effectivePercent === 100
-				? chalk.gray // Gray for 100% with deferred/cancelled
-				: completedColor; // Otherwise match the completed color
+			? chalk.gray // Gray for 100% with deferred/cancelled
+			: completedColor; // Otherwise match the completed color
 
 	// Build the complete progress bar
-	return `${completedSection}${deferredCancelledSection}${remainingSection} ${percentTextColor(`${effectivePercent.toFixed(0)}%`)}`;
+	return `${completedSection}${deferredCancelledSection}${remainingSection} ${percentTextColor(
+		`${effectivePercent.toFixed(0)}%`
+	)}`;
 }
 
 /**
@@ -619,12 +623,16 @@ function displayHelp() {
 		],
 		[
 			`${chalk.yellow('LOG_LEVEL')}${chalk.reset('')}`,
-			`${chalk.white('Console output level (debug,info,warn,error)')}${chalk.reset('')}`,
+			`${chalk.white(
+				'Console output level (debug,info,warn,error)'
+			)}${chalk.reset('')}`,
 			`${chalk.dim(`Default: ${CONFIG.logLevel}`)}${chalk.reset('')}`
 		],
 		[
 			`${chalk.yellow('DEFAULT_SUBTASKS')}${chalk.reset('')}`,
-			`${chalk.white('Default number of subtasks to generate')}${chalk.reset('')}`,
+			`${chalk.white('Default number of subtasks to generate')}${chalk.reset(
+				''
+			)}`,
 			`${chalk.dim(`Default: ${CONFIG.defaultSubtasks}`)}${chalk.reset('')}`
 		],
 		[
@@ -899,11 +907,19 @@ async function displayNextTask(tasksPath) {
 		boxen(
 			chalk.white.bold('Suggested Actions:') +
 				'\n' +
-				`${chalk.cyan('1.')} Mark as in-progress: ${chalk.yellow(`task-master set-status --id=${nextTask.id} --status=in-progress`)}\n` +
-				`${chalk.cyan('2.')} Mark as done when completed: ${chalk.yellow(`task-master set-status --id=${nextTask.id} --status=done`)}\n` +
+				`${chalk.cyan('1.')} Mark as in-progress: ${chalk.yellow(
+					`task-master set-status --id=${nextTask.id} --status=in-progress`
+				)}\n` +
+				`${chalk.cyan('2.')} Mark as done when completed: ${chalk.yellow(
+					`task-master set-status --id=${nextTask.id} --status=done`
+				)}\n` +
 				(nextTask.subtasks && nextTask.subtasks.length > 0
-					? `${chalk.cyan('3.')} Update subtask status: ${chalk.yellow(`task-master set-status --id=${nextTask.id}.1 --status=done`)}`
-					: `${chalk.cyan('3.')} Break down into subtasks: ${chalk.yellow(`task-master expand --id=${nextTask.id}`)}`),
+					? `${chalk.cyan('3.')} Update subtask status: ${chalk.yellow(
+							`task-master set-status --id=${nextTask.id}.1 --status=done`
+					  )}`
+					: `${chalk.cyan('3.')} Break down into subtasks: ${chalk.yellow(
+							`task-master expand --id=${nextTask.id}`
+					  )}`),
 			{
 				padding: { top: 0, bottom: 0, left: 1, right: 1 },
 				borderColor: 'green',
@@ -1019,9 +1035,15 @@ async function displayTaskById(tasksPath, taskId) {
 			boxen(
 				chalk.white.bold('Suggested Actions:') +
 					'\n' +
-					`${chalk.cyan('1.')} Mark as in-progress: ${chalk.yellow(`task-master set-status --id=${task.parentTask.id}.${task.id} --status=in-progress`)}\n` +
-					`${chalk.cyan('2.')} Mark as done when completed: ${chalk.yellow(`task-master set-status --id=${task.parentTask.id}.${task.id} --status=done`)}\n` +
-					`${chalk.cyan('3.')} View parent task: ${chalk.yellow(`task-master show --id=${task.parentTask.id}`)}`,
+					`${chalk.cyan('1.')} Mark as in-progress: ${chalk.yellow(
+						`task-master set-status --id=${task.parentTask.id}.${task.id} --status=in-progress`
+					)}\n` +
+					`${chalk.cyan('2.')} Mark as done when completed: ${chalk.yellow(
+						`task-master set-status --id=${task.parentTask.id}.${task.id} --status=done`
+					)}\n` +
+					`${chalk.cyan('3.')} View parent task: ${chalk.yellow(
+						`task-master show --id=${task.parentTask.id}`
+					)}`,
 				{
 					padding: { top: 0, bottom: 0, left: 1, right: 1 },
 					borderColor: 'green',
@@ -1083,16 +1105,32 @@ async function displayTaskById(tasksPath, taskId) {
 
 			// Status counts for display
 			const statusCounts =
-				`${chalk.green('✓ Done:')} ${completedSubtasks}  ${chalk.hex('#FFA500')('► In Progress:')} ${inProgressSubtasks}  ${chalk.yellow('○ Pending:')} ${pendingSubtasks}\n` +
-				`${chalk.red('! Blocked:')} ${blockedSubtasks}  ${chalk.gray('⏱ Deferred:')} ${deferredSubtasks}  ${chalk.gray('✗ Cancelled:')} ${cancelledSubtasks}`;
+				`${chalk.green('✓ Done:')} ${completedSubtasks}  ${chalk.hex('#FFA500')(
+					'► In Progress:'
+				)} ${inProgressSubtasks}  ${chalk.yellow(
+					'○ Pending:'
+				)} ${pendingSubtasks}\n` +
+				`${chalk.red('! Blocked:')} ${blockedSubtasks}  ${chalk.gray(
+					'⏱ Deferred:'
+				)} ${deferredSubtasks}  ${chalk.gray(
+					'✗ Cancelled:'
+				)} ${cancelledSubtasks}`;
 
 			console.log(
 				boxen(
 					chalk.white.bold('Subtask Progress:') +
 						'\n\n' +
-						`${chalk.cyan('Completed:')} ${completedSubtasks}/${totalSubtasks} (${completionPercentage.toFixed(1)}%)\n` +
+						`${chalk.cyan(
+							'Completed:'
+						)} ${completedSubtasks}/${totalSubtasks} (${completionPercentage.toFixed(
+							1
+						)}%)\n` +
 						`${statusCounts}\n` +
-						`${chalk.cyan('Progress:')} ${createProgressBar(completionPercentage, progressBarLength, statusBreakdown)}`,
+						`${chalk.cyan('Progress:')} ${createProgressBar(
+							completionPercentage,
+							progressBarLength,
+							statusBreakdown
+						)}`,
 					{
 						padding: { top: 0, bottom: 0, left: 1, right: 1 },
 						borderColor: 'blue',
@@ -1348,16 +1386,32 @@ async function displayTaskById(tasksPath, taskId) {
 
 			// Status counts for display
 			const statusCounts =
-				`${chalk.green('✓ Done:')} ${completedSubtasks}  ${chalk.hex('#FFA500')('► In Progress:')} ${inProgressSubtasks}  ${chalk.yellow('○ Pending:')} ${pendingSubtasks}\n` +
-				`${chalk.red('! Blocked:')} ${blockedSubtasks}  ${chalk.gray('⏱ Deferred:')} ${deferredSubtasks}  ${chalk.gray('✗ Cancelled:')} ${cancelledSubtasks}`;
+				`${chalk.green('✓ Done:')} ${completedSubtasks}  ${chalk.hex('#FFA500')(
+					'► In Progress:'
+				)} ${inProgressSubtasks}  ${chalk.yellow(
+					'○ Pending:'
+				)} ${pendingSubtasks}\n` +
+				`${chalk.red('! Blocked:')} ${blockedSubtasks}  ${chalk.gray(
+					'⏱ Deferred:'
+				)} ${deferredSubtasks}  ${chalk.gray(
+					'✗ Cancelled:'
+				)} ${cancelledSubtasks}`;
 
 			console.log(
 				boxen(
 					chalk.white.bold('Subtask Progress:') +
 						'\n\n' +
-						`${chalk.cyan('Completed:')} ${completedSubtasks}/${totalSubtasks} (${completionPercentage.toFixed(1)}%)\n` +
+						`${chalk.cyan(
+							'Completed:'
+						)} ${completedSubtasks}/${totalSubtasks} (${completionPercentage.toFixed(
+							1
+						)}%)\n` +
 						`${statusCounts}\n` +
-						`${chalk.cyan('Progress:')} ${createProgressBar(completionPercentage, progressBarLength, statusBreakdown)}`,
+						`${chalk.cyan('Progress:')} ${createProgressBar(
+							completionPercentage,
+							progressBarLength,
+							statusBreakdown
+						)}`,
 					{
 						padding: { top: 0, bottom: 0, left: 1, right: 1 },
 						borderColor: 'blue',
@@ -1393,11 +1447,19 @@ async function displayTaskById(tasksPath, taskId) {
 		boxen(
 			chalk.white.bold('Suggested Actions:') +
 				'\n' +
-				`${chalk.cyan('1.')} Mark as in-progress: ${chalk.yellow(`task-master set-status --id=${task.id} --status=in-progress`)}\n` +
-				`${chalk.cyan('2.')} Mark as done when completed: ${chalk.yellow(`task-master set-status --id=${task.id} --status=done`)}\n` +
+				`${chalk.cyan('1.')} Mark as in-progress: ${chalk.yellow(
+					`task-master set-status --id=${task.id} --status=in-progress`
+				)}\n` +
+				`${chalk.cyan('2.')} Mark as done when completed: ${chalk.yellow(
+					`task-master set-status --id=${task.id} --status=done`
+				)}\n` +
 				(task.subtasks && task.subtasks.length > 0
-					? `${chalk.cyan('3.')} Update subtask status: ${chalk.yellow(`task-master set-status --id=${task.id}.1 --status=done`)}`
-					: `${chalk.cyan('3.')} Break down into subtasks: ${chalk.yellow(`task-master expand --id=${task.id}`)}`),
+					? `${chalk.cyan('3.')} Update subtask status: ${chalk.yellow(
+							`task-master set-status --id=${task.id}.1 --status=done`
+					  )}`
+					: `${chalk.cyan('3.')} Break down into subtasks: ${chalk.yellow(
+							`task-master expand --id=${task.id}`
+					  )}`),
 			{
 				padding: { top: 0, bottom: 0, left: 1, right: 1 },
 				borderColor: 'green',
@@ -1546,9 +1608,15 @@ async function displayComplexityReport(reportPath) {
 	console.log(
 		boxen(
 			chalk.white.bold('Complexity Distribution\n\n') +
-				`${chalk.green.bold('Low (1-4):')} ${complexityDistribution[0]} tasks (${percentLow}%)\n` +
-				`${chalk.yellow.bold('Medium (5-7):')} ${complexityDistribution[1]} tasks (${percentMedium}%)\n` +
-				`${chalk.red.bold('High (8-10):')} ${complexityDistribution[2]} tasks (${percentHigh}%)`,
+				`${chalk.green.bold('Low (1-4):')} ${
+					complexityDistribution[0]
+				} tasks (${percentLow}%)\n` +
+				`${chalk.yellow.bold('Medium (5-7):')} ${
+					complexityDistribution[1]
+				} tasks (${percentMedium}%)\n` +
+				`${chalk.red.bold('High (8-10):')} ${
+					complexityDistribution[2]
+				} tasks (${percentHigh}%)`,
 			{
 				padding: 1,
 				borderColor: 'cyan',
@@ -1587,7 +1655,9 @@ async function displayComplexityReport(reportPath) {
 
 	// When adding rows, don't truncate the expansion command
 	tasksNeedingExpansion.forEach((task) => {
-		const expansionCommand = `task-master expand --id=${task.taskId} --num=${task.recommendedSubtasks}${task.expansionPrompt ? ` --prompt="${task.expansionPrompt}"` : ''}`;
+		const expansionCommand = `task-master expand --id=${task.taskId} --num=${
+			task.recommendedSubtasks
+		}${task.expansionPrompt ? ` --prompt="${task.expansionPrompt}"` : ''}`;
 
 		complexTable.push([
 			task.taskId,
@@ -1639,9 +1709,15 @@ async function displayComplexityReport(reportPath) {
 		boxen(
 			chalk.white.bold('Suggested Actions:') +
 				'\n\n' +
-				`${chalk.cyan('1.')} Expand all complex tasks: ${chalk.yellow(`task-master expand --all`)}\n` +
-				`${chalk.cyan('2.')} Expand a specific task: ${chalk.yellow(`task-master expand --id=<id>`)}\n` +
-				`${chalk.cyan('3.')} Regenerate with research: ${chalk.yellow(`task-master analyze-complexity --research`)}`,
+				`${chalk.cyan('1.')} Expand all complex tasks: ${chalk.yellow(
+					`task-master expand --all`
+				)}\n` +
+				`${chalk.cyan('2.')} Expand a specific task: ${chalk.yellow(
+					`task-master expand --id=<id>`
+				)}\n` +
+				`${chalk.cyan('3.')} Regenerate with research: ${chalk.yellow(
+					`task-master analyze-complexity --research`
+				)}`,
 			{
 				padding: 1,
 				borderColor: 'cyan',

@@ -38,8 +38,8 @@ const args = process.argv.slice(2);
 const versionBump = args.includes('--major')
 	? 'major'
 	: args.includes('--minor')
-		? 'minor'
-		: 'patch';
+	? 'minor'
+	: 'patch';
 
 // Check for explicit version
 const versionArg = args.find((arg) => arg.startsWith('--version='));

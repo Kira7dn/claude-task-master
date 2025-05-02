@@ -85,7 +85,9 @@ export function registerUpdateTool(server) {
 					);
 				} else {
 					log.error(
-						`Failed to update tasks: ${result.error?.message || 'Unknown error'}`
+						`Failed to update tasks: ${
+							result.error?.message || 'Unknown error'
+						}`
 					);
 				}
 

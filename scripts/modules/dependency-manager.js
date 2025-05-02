@@ -189,7 +189,9 @@ async function addDependency(tasksPath, taskId, dependencyId) {
 			console.log(
 				boxen(
 					chalk.green(`Successfully added dependency:\n\n`) +
-						`Task ${chalk.bold(formattedTaskId)} now depends on ${chalk.bold(formattedDependencyId)}`,
+						`Task ${chalk.bold(formattedTaskId)} now depends on ${chalk.bold(
+							formattedDependencyId
+						)}`,
 					{
 						padding: 1,
 						borderColor: 'green',
@@ -328,7 +330,9 @@ async function removeDependency(tasksPath, taskId, dependencyId) {
 		console.log(
 			boxen(
 				chalk.green(`Successfully removed dependency:\n\n`) +
-					`Task ${chalk.bold(formattedTaskId)} no longer depends on ${chalk.bold(formattedDependencyId)}`,
+					`Task ${chalk.bold(
+						formattedTaskId
+					)} no longer depends on ${chalk.bold(formattedDependencyId)}`,
 				{
 					padding: 1,
 					borderColor: 'green',
@@ -674,8 +678,12 @@ async function validateDependenciesCommand(tasksPath, options = {}) {
 						chalk.green(`Dependency Validation Results:\n\n`) +
 							`${chalk.cyan('Tasks checked:')} ${taskCount}\n` +
 							`${chalk.cyan('Subtasks checked:')} ${subtaskCount}\n` +
-							`${chalk.cyan('Non-existent dependencies removed:')} ${stats.nonExistentDependenciesRemoved}\n` +
-							`${chalk.cyan('Self-dependencies removed:')} ${stats.selfDependenciesRemoved}\n` +
+							`${chalk.cyan('Non-existent dependencies removed:')} ${
+								stats.nonExistentDependenciesRemoved
+							}\n` +
+							`${chalk.cyan('Self-dependencies removed:')} ${
+								stats.selfDependenciesRemoved
+							}\n` +
 							`${chalk.cyan('Tasks fixed:')} ${stats.tasksFixed}\n` +
 							`${chalk.cyan('Subtasks fixed:')} ${stats.subtasksFixed}`,
 						{
@@ -712,7 +720,9 @@ async function validateDependenciesCommand(tasksPath, options = {}) {
 						chalk.green(`All Dependencies Are Valid\n\n`) +
 							`${chalk.cyan('Tasks checked:')} ${taskCount}\n` +
 							`${chalk.cyan('Subtasks checked:')} ${subtaskCount}\n` +
-							`${chalk.cyan('Total dependencies verified:')} ${countAllDependencies(data.tasks)}`,
+							`${chalk.cyan(
+								'Total dependencies verified:'
+							)} ${countAllDependencies(data.tasks)}`,
 						{
 							padding: 1,
 							borderColor: 'green',
@@ -1109,10 +1119,18 @@ async function fixDependenciesCommand(tasksPath, options = {}) {
 				console.log(
 					boxen(
 						chalk.green(`Dependency Fixes Summary:\n\n`) +
-							`${chalk.cyan('Invalid dependencies removed:')} ${stats.nonExistentDependenciesRemoved}\n` +
-							`${chalk.cyan('Self-dependencies removed:')} ${stats.selfDependenciesRemoved}\n` +
-							`${chalk.cyan('Duplicate dependencies removed:')} ${stats.duplicateDependenciesRemoved}\n` +
-							`${chalk.cyan('Circular dependencies fixed:')} ${stats.circularDependenciesFixed}\n\n` +
+							`${chalk.cyan('Invalid dependencies removed:')} ${
+								stats.nonExistentDependenciesRemoved
+							}\n` +
+							`${chalk.cyan('Self-dependencies removed:')} ${
+								stats.selfDependenciesRemoved
+							}\n` +
+							`${chalk.cyan('Duplicate dependencies removed:')} ${
+								stats.duplicateDependenciesRemoved
+							}\n` +
+							`${chalk.cyan('Circular dependencies fixed:')} ${
+								stats.circularDependenciesFixed
+							}\n\n` +
 							`${chalk.cyan('Tasks fixed:')} ${stats.tasksFixed}\n` +
 							`${chalk.cyan('Subtasks fixed:')} ${stats.subtasksFixed}\n`,
 						{
@@ -1133,7 +1151,9 @@ async function fixDependenciesCommand(tasksPath, options = {}) {
 					boxen(
 						chalk.green(`All Dependencies Are Valid\n\n`) +
 							`${chalk.cyan('Tasks checked:')} ${data.tasks.length}\n` +
-							`${chalk.cyan('Total dependencies verified:')} ${countAllDependencies(data.tasks)}`,
+							`${chalk.cyan(
+								'Total dependencies verified:'
+							)} ${countAllDependencies(data.tasks)}`,
 						{
 							padding: 1,
 							borderColor: 'green',

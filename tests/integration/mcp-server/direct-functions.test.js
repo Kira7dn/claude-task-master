@@ -88,7 +88,7 @@ const mockExpandTask = jest
 								status: 'pending',
 								dependencies: [1]
 							}
-						]
+					  ]
 					: [
 							{
 								id: 1,
@@ -104,7 +104,7 @@ const mockExpandTask = jest
 								status: 'pending',
 								dependencies: [1]
 							}
-						]
+					  ]
 			};
 
 			return Promise.resolve(task);

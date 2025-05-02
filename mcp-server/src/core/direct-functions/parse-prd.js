@@ -171,7 +171,9 @@ export async function parsePRDDirect(args, log, context = {}) {
 			if (fs.existsSync(outputPath)) {
 				const tasksData = JSON.parse(fs.readFileSync(outputPath, 'utf8'));
 				const actionVerb = append ? 'appended' : 'generated';
-				const message = `Successfully ${actionVerb} ${tasksData.tasks?.length || 0} tasks from PRD`;
+				const message = `Successfully ${actionVerb} ${
+					tasksData.tasks?.length || 0
+				} tasks from PRD`;
 
 				log.info(message);
 

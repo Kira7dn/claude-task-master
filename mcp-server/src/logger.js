@@ -12,7 +12,7 @@ const LOG_LEVELS = {
 
 // Get log level from environment or default to info
 const LOG_LEVEL = process.env.LOG_LEVEL
-	? (LOG_LEVELS[process.env.LOG_LEVEL.toLowerCase()] ?? LOG_LEVELS.info)
+	? LOG_LEVELS[process.env.LOG_LEVEL.toLowerCase()] ?? LOG_LEVELS.info
 	: LOG_LEVELS.info;
 
 /**

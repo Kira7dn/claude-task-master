@@ -923,7 +923,9 @@ function registerCommands(programInstance) {
 	programInstance
 		.command('next')
 		.description(
-			`Show the next task to work on based on dependencies and status${chalk.reset('')}`
+			`Show the next task to work on based on dependencies and status${chalk.reset(
+				''
+			)}`
 		)
 		.option('-f, --file <file>', 'Path to the tasks file', 'tasks/tasks.json')
 		.action(async (options) => {
@@ -1151,17 +1153,21 @@ function registerCommands(programInstance) {
 								'\n' +
 								(dependencies.length > 0
 									? chalk.white(`Dependencies: ${dependencies.join(', ')}`) +
-										'\n'
+									  '\n'
 									: '') +
 								'\n' +
 								chalk.white.bold('Next Steps:') +
 								'\n' +
 								chalk.cyan(
-									`1. Run ${chalk.yellow(`task-master show ${parentId}`)} to see the parent task with all subtasks`
+									`1. Run ${chalk.yellow(
+										`task-master show ${parentId}`
+									)} to see the parent task with all subtasks`
 								) +
 								'\n' +
 								chalk.cyan(
-									`2. Run ${chalk.yellow(`task-master set-status --id=${parentId}.${subtask.id} --status=in-progress`)} to start working on it`
+									`2. Run ${chalk.yellow(
+										`task-master set-status --id=${parentId}.${subtask.id} --status=in-progress`
+									)} to start working on it`
 								),
 							{
 								padding: 1,
@@ -1315,11 +1321,15 @@ function registerCommands(programInstance) {
 									chalk.white.bold('Next Steps:') +
 									'\n' +
 									chalk.cyan(
-										`1. Run ${chalk.yellow(`task-master show ${result.id}`)} to see details of the new task`
+										`1. Run ${chalk.yellow(
+											`task-master show ${result.id}`
+										)} to see details of the new task`
 									) +
 									'\n' +
 									chalk.cyan(
-										`2. Run ${chalk.yellow(`task-master set-status --id=${result.id} --status=in-progress`)} to start working on it`
+										`2. Run ${chalk.yellow(
+											`task-master set-status --id=${result.id} --status=in-progress`
+										)} to start working on it`
 									),
 								{
 									padding: 1,
@@ -1425,7 +1435,9 @@ function registerCommands(programInstance) {
 				if (invalidTasks.length > 0) {
 					console.error(
 						chalk.red(
-							`Error: The following tasks were not found: ${invalidTasks.join(', ')}`
+							`Error: The following tasks were not found: ${invalidTasks.join(
+								', '
+							)}`
 						)
 					);
 					process.exit(1);
@@ -1497,7 +1509,9 @@ function registerCommands(programInstance) {
 							type: 'confirm',
 							name: 'confirm',
 							message: chalk.red.bold(
-								`Are you sure you want to permanently delete ${taskIdArray.length > 1 ? 'these tasks' : 'this task'}?`
+								`Are you sure you want to permanently delete ${
+									taskIdArray.length > 1 ? 'these tasks' : 'this task'
+								}?`
 							),
 							default: false
 						}
@@ -1532,13 +1546,17 @@ function registerCommands(programInstance) {
 					console.log(
 						boxen(
 							chalk.green(
-								`Successfully removed ${successfulRemovals.length} task${successfulRemovals.length > 1 ? 's' : ''}`
+								`Successfully removed ${successfulRemovals.length} task${
+									successfulRemovals.length > 1 ? 's' : ''
+								}`
 							) +
 								'\n\n' +
 								successfulRemovals
 									.map((r) =>
 										chalk.white(
-											`✓ ${r.taskId.includes('.') ? 'Subtask' : 'Task'} ${r.taskId}`
+											`✓ ${r.taskId.includes('.') ? 'Subtask' : 'Task'} ${
+												r.taskId
+											}`
 										)
 									)
 									.join('\n'),
@@ -1556,7 +1574,9 @@ function registerCommands(programInstance) {
 					console.log(
 						boxen(
 							chalk.red(
-								`Failed to remove ${failedRemovals.length} task${failedRemovals.length > 1 ? 's' : ''}`
+								`Failed to remove ${failedRemovals.length} task${
+									failedRemovals.length > 1 ? 's' : ''
+								}`
 							) +
 								'\n\n' +
 								failedRemovals
@@ -1785,8 +1805,12 @@ function compareVersions(v1, v2) {
  */
 function displayUpgradeNotification(currentVersion, latestVersion) {
 	const message = boxen(
-		`${chalk.blue.bold('Update Available!')} ${chalk.dim(currentVersion)} → ${chalk.green(latestVersion)}\n\n` +
-			`Run ${chalk.cyan('npm i task-master-ai@latest -g')} to update to the latest version with new features and bug fixes.`,
+		`${chalk.blue.bold('Update Available!')} ${chalk.dim(
+			currentVersion
+		)} → ${chalk.green(latestVersion)}\n\n` +
+			`Run ${chalk.cyan(
+				'npm i task-master-ai@latest -g'
+			)} to update to the latest version with new features and bug fixes.`,
 		{
 			padding: 1,
 			margin: { top: 1, bottom: 1 },

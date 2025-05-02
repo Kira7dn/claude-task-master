@@ -387,7 +387,9 @@ async function handleStreamingRequest(
 		}
 
 		report(
-			`Completed streaming response from ${aiClient ? 'provided' : 'default'} AI client!`,
+			`Completed streaming response from ${
+				aiClient ? 'provided' : 'default'
+			} AI client!`,
 			'info'
 		);
 
@@ -821,7 +823,9 @@ Note on dependencies: Subtasks can depend on other subtasks with lower IDs. Use 
 				streamingInterval = setInterval(() => {
 					readline.cursorTo(process.stdout, 0);
 					process.stdout.write(
-						`Generating research-backed subtasks for task ${task.id}${'.'.repeat(dotCount)}`
+						`Generating research-backed subtasks for task ${
+							task.id
+						}${'.'.repeat(dotCount)}`
 					);
 					dotCount = (dotCount + 1) % 4;
 				}, 500);
@@ -945,7 +949,9 @@ function parseSubtasksFromText(text, startId, expectedCount, parentTaskId) {
 		if (!subtask.id || subtask.id !== startId + index) {
 			log(
 				'warn',
-				`Correcting subtask ID from ${subtask.id || 'undefined'} to ${startId + index}`
+				`Correcting subtask ID from ${subtask.id || 'undefined'} to ${
+					startId + index
+				}`
 			);
 			subtask.id = startId + index;
 		}
@@ -1000,7 +1006,10 @@ Analyze each task and return a JSON array with the following structure for each 
     "taskId": number,
     "taskTitle": string,
     "complexityScore": number (1-10),
-    "recommendedSubtasks": number (${Math.max(3, CONFIG.defaultSubtasks - 1)}-${Math.min(8, CONFIG.defaultSubtasks + 2)}),
+    "recommendedSubtasks": number (${Math.max(
+			3,
+			CONFIG.defaultSubtasks - 1
+		)}-${Math.min(8, CONFIG.defaultSubtasks + 2)}),
     "expansionPrompt": string (a specific prompt for generating good subtasks),
     "reasoning": string (brief explanation of your assessment)
   },

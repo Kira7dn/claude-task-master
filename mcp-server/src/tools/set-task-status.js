@@ -84,7 +84,9 @@ export function registerSetTaskStatusTool(server) {
 					);
 				} else {
 					log.error(
-						`Failed to update task status: ${result.error?.message || 'Unknown error'}`
+						`Failed to update task status: ${
+							result.error?.message || 'Unknown error'
+						}`
 					);
 				}
 

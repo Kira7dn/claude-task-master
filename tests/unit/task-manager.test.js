@@ -174,7 +174,7 @@ const testParsePRD = async (prdPath, outputPath, numTasks, options = {}) => {
 			? {
 					...existingTasks,
 					tasks: [...existingTasks.tasks, ...newTasks.tasks]
-				}
+			  }
 			: newTasks;
 
 		const dir = mockDirname(outputPath);
@@ -284,7 +284,7 @@ const testListTasks = (tasksData, statusFilter, withSubtasks = false) => {
 				(task) =>
 					task.status &&
 					task.status.toLowerCase() === statusFilter.toLowerCase()
-			)
+		  )
 		: tasksData.tasks;
 
 	// Call the displayTaskList mock for testing
@@ -1042,7 +1042,9 @@ describe('Task Manager Module', () => {
 
 			// 3. Generate files
 			data.tasks.forEach((task) => {
-				const taskPath = `${outputDir}/task_${task.id.toString().padStart(3, '0')}.txt`;
+				const taskPath = `${outputDir}/task_${task.id
+					.toString()
+					.padStart(3, '0')}.txt`;
 				let content = `# Task ID: ${task.id}\n`;
 				content += `# Title: ${task.title}\n`;
 

@@ -59,7 +59,9 @@ export function registerInitializeProjectTool(server) {
 
 				return handleApiResult(result, log, 'Initialization failed');
 			} catch (error) {
-				const errorMessage = `Project initialization tool failed: ${error.message || 'Unknown error'}`;
+				const errorMessage = `Project initialization tool failed: ${
+					error.message || 'Unknown error'
+				}`;
 				log.error(errorMessage, error);
 				return createErrorResponse(errorMessage, { details: error.stack });
 			}

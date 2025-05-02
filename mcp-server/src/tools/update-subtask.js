@@ -83,7 +83,9 @@ export function registerUpdateSubtaskTool(server) {
 					log.info(`Successfully updated subtask with ID ${args.id}`);
 				} else {
 					log.error(
-						`Failed to update subtask: ${result.error?.message || 'Unknown error'}`
+						`Failed to update subtask: ${
+							result.error?.message || 'Unknown error'
+						}`
 					);
 				}
 

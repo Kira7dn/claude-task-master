@@ -98,7 +98,9 @@ export function registerExpandAllTool(server) {
 					log.info(`Successfully expanded all tasks: ${result.data.message}`);
 				} else {
 					log.error(
-						`Failed to expand all tasks: ${result.error?.message || 'Unknown error'}`
+						`Failed to expand all tasks: ${
+							result.error?.message || 'Unknown error'
+						}`
 					);
 				}
 

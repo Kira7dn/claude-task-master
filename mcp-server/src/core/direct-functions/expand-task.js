@@ -106,14 +106,18 @@ export async function expandTaskDirect(args, log, context = {}) {
 
 	try {
 		log.info(
-			`[expandTaskDirect] Expanding task ${taskId} into ${numSubtasks || 'default'} subtasks. Research: ${useResearch}`
+			`[expandTaskDirect] Expanding task ${taskId} into ${
+				numSubtasks || 'default'
+			} subtasks. Research: ${useResearch}`
 		);
 
 		// Read tasks data
 		log.info(`[expandTaskDirect] Attempting to read JSON from: ${tasksPath}`);
 		const data = readJSON(tasksPath);
 		log.info(
-			`[expandTaskDirect] Result of readJSON: ${data ? 'Data read successfully' : 'readJSON returned null or undefined'}`
+			`[expandTaskDirect] Result of readJSON: ${
+				data ? 'Data read successfully' : 'readJSON returned null or undefined'
+			}`
 		);
 
 		if (!data || !data.tasks) {
@@ -124,7 +128,9 @@ export async function expandTaskDirect(args, log, context = {}) {
 				success: false,
 				error: {
 					code: 'INVALID_TASKS_FILE',
-					message: `No valid tasks found in ${tasksPath}. readJSON returned: ${JSON.stringify(data)}`
+					message: `No valid tasks found in ${tasksPath}. readJSON returned: ${JSON.stringify(
+						data
+					)}`
 				},
 				fromCache: false
 			};

@@ -271,8 +271,8 @@ function executeTaskMasterCommand(
 			const errorOutput = result.stderr
 				? result.stderr.trim()
 				: result.stdout
-					? result.stdout.trim()
-					: 'Unknown error';
+				? result.stdout.trim()
+				: 'Unknown error';
 			throw new Error(
 				`Command failed with exit code ${result.status}: ${errorOutput}`
 			);
@@ -430,9 +430,9 @@ function createContentResponse(content) {
 				text:
 					typeof content === 'object'
 						? // Format JSON nicely with indentation
-							JSON.stringify(content, null, 2)
+						  JSON.stringify(content, null, 2)
 						: // Keep other content types as-is
-							String(content)
+						  String(content)
 			}
 		]
 	};

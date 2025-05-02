@@ -17,7 +17,11 @@ try {
 	if (fs.existsSync(mcpPath)) {
 		console.error('mcp.json file found');
 		console.error(
-			`File content: ${JSON.stringify(JSON.parse(fs.readFileSync(mcpPath, 'utf8')), null, 2)}`
+			`File content: ${JSON.stringify(
+				JSON.parse(fs.readFileSync(mcpPath, 'utf8')),
+				null,
+				2
+			)}`
 		);
 	} else {
 		console.error('mcp.json file not found');

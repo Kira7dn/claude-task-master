@@ -80,7 +80,9 @@ export function registerGenerateTool(server) {
 					log.info(`Successfully generated task files: ${result.data.message}`);
 				} else {
 					log.error(
-						`Failed to generate task files: ${result.error?.message || 'Unknown error'}`
+						`Failed to generate task files: ${
+							result.error?.message || 'Unknown error'
+						}`
 					);
 				}
 

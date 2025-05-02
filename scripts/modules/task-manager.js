@@ -173,7 +173,7 @@ async function parsePRD(
 			? {
 					...existingTasks,
 					tasks: [...existingTasks.tasks, ...newTasksData.tasks]
-				}
+			  }
 			: newTasksData;
 
 		// Create the directory if it doesn't exist
@@ -216,8 +216,12 @@ async function parsePRD(
 				boxen(
 					chalk.white.bold('Next Steps:') +
 						'\n\n' +
-						`${chalk.cyan('1.')} Run ${chalk.yellow('task-master list')} to view all tasks\n` +
-						`${chalk.cyan('2.')} Run ${chalk.yellow('task-master expand --id=<id>')} to break down a task into subtasks`,
+						`${chalk.cyan('1.')} Run ${chalk.yellow(
+							'task-master list'
+						)} to view all tasks\n` +
+						`${chalk.cyan('2.')} Run ${chalk.yellow(
+							'task-master expand --id=<id>'
+						)} to break down a task into subtasks`,
 					{
 						padding: 1,
 						borderColor: 'cyan',
@@ -501,7 +505,9 @@ Return only the updated tasks as a valid JSON array.`
 								streamingInterval = setInterval(() => {
 									readline.cursorTo(process.stdout, 0);
 									process.stdout.write(
-										`Receiving streaming response from Claude${'.'.repeat(dotCount)}`
+										`Receiving streaming response from Claude${'.'.repeat(
+											dotCount
+										)}`
 									);
 									dotCount = (dotCount + 1) % 4;
 								}, 500);
@@ -542,7 +548,9 @@ Return only the updated task as a valid JSON object.`
 								}
 								if (mcpLog) {
 									mcpLog.info(
-										`Progress: ${(responseText.length / CONFIG.maxTokens) * 100}%`
+										`Progress: ${
+											(responseText.length / CONFIG.maxTokens) * 100
+										}%`
 									);
 								}
 							}
@@ -1037,7 +1045,9 @@ Return only the updated task as a valid JSON object.`
 							updatedTask = JSON.parse(jsonText);
 						} catch (parseError) {
 							throw new Error(
-								`Failed to parse ${modelType} response as JSON: ${parseError.message}\nResponse fragment: ${jsonText.substring(0, 100)}...`
+								`Failed to parse ${modelType} response as JSON: ${
+									parseError.message
+								}\nResponse fragment: ${jsonText.substring(0, 100)}...`
 							);
 						}
 					} else {
@@ -1053,7 +1063,9 @@ Return only the updated task as a valid JSON object.`
 								streamingInterval = setInterval(() => {
 									readline.cursorTo(process.stdout, 0);
 									process.stdout.write(
-										`Receiving streaming response from Claude${'.'.repeat(dotCount)}`
+										`Receiving streaming response from Claude${'.'.repeat(
+											dotCount
+										)}`
 									);
 									dotCount = (dotCount + 1) % 4;
 								}, 500);
@@ -1094,7 +1106,9 @@ Return only the updated task as a valid JSON object.`
 								}
 								if (mcpLog) {
 									mcpLog.info(
-										`Progress: ${(responseText.length / CONFIG.maxTokens) * 100}%`
+										`Progress: ${
+											(responseText.length / CONFIG.maxTokens) * 100
+										}%`
 									);
 								}
 							}
@@ -1122,7 +1136,9 @@ Return only the updated task as a valid JSON object.`
 								updatedTask = JSON.parse(jsonText);
 							} catch (parseError) {
 								throw new Error(
-									`Failed to parse ${modelType} response as JSON: ${parseError.message}\nResponse fragment: ${jsonText.substring(0, 100)}...`
+									`Failed to parse ${modelType} response as JSON: ${
+										parseError.message
+									}\nResponse fragment: ${jsonText.substring(0, 100)}...`
 								);
 							}
 						} catch (streamError) {
@@ -1444,7 +1460,11 @@ function generateTaskFiles(tasksPath, outputDir, options = {}) {
 
 			// Format dependencies with their status
 			if (task.dependencies && task.dependencies.length > 0) {
-				content += `# Dependencies: ${formatDependenciesWithStatus(task.dependencies, data.tasks, false)}\n`;
+				content += `# Dependencies: ${formatDependenciesWithStatus(
+					task.dependencies,
+					data.tasks,
+					false
+				)}\n`;
 			} else {
 				content += '# Dependencies: None\n';
 			}
@@ -1472,7 +1492,9 @@ function generateTaskFiles(tasksPath, outputDir, options = {}) {
 				content += '\n# Subtasks:\n';
 
 				task.subtasks.forEach((subtask) => {
-					content += `## ${subtask.id}. ${subtask.title} [${subtask.status || 'pending'}]\n`;
+					content += `## ${subtask.id}. ${subtask.title} [${
+						subtask.status || 'pending'
+					}]\n`;
 
 					if (subtask.dependencies && subtask.dependencies.length > 0) {
 						// Format subtask dependencies
@@ -1797,7 +1819,7 @@ function listTasks(
 						(task) =>
 							task.status &&
 							task.status.toLowerCase() === statusFilter.toLowerCase()
-					)
+				  )
 				: data.tasks; // Default to all tasks if no filter or filter is 'all'
 
 		// Calculate completion statistics
@@ -2013,11 +2035,19 @@ function listTasks(
 		// Find next task to work on
 		const nextTask = findNextTask(data.tasks);
 		const nextTaskInfo = nextTask
-			? `ID: ${chalk.cyan(nextTask.id)} - ${chalk.white.bold(truncate(nextTask.title, 40))}\n` +
-				`Priority: ${chalk.white(nextTask.priority || 'medium')}  Dependencies: ${formatDependenciesWithStatus(nextTask.dependencies, data.tasks, true)}`
+			? `ID: ${chalk.cyan(nextTask.id)} - ${chalk.white.bold(
+					truncate(nextTask.title, 40)
+			  )}\n` +
+			  `Priority: ${chalk.white(
+					nextTask.priority || 'medium'
+			  )}  Dependencies: ${formatDependenciesWithStatus(
+					nextTask.dependencies,
+					data.tasks,
+					true
+			  )}`
 			: chalk.yellow(
 					'No eligible tasks found. All tasks are either completed or have unsatisfied dependencies.'
-				);
+			  );
 
 		// Get terminal width - more reliable method
 		let terminalWidth;
@@ -2038,30 +2068,80 @@ function listTasks(
 		const projectDashboardContent =
 			chalk.white.bold('Project Dashboard') +
 			'\n' +
-			`Tasks Progress: ${chalk.greenBright(taskProgressBar)} ${completionPercentage.toFixed(0)}%\n` +
-			`Done: ${chalk.green(doneCount)}  In Progress: ${chalk.blue(inProgressCount)}  Pending: ${chalk.yellow(pendingCount)}  Blocked: ${chalk.red(blockedCount)}  Deferred: ${chalk.gray(deferredCount)}  Cancelled: ${chalk.gray(cancelledCount)}\n\n` +
-			`Subtasks Progress: ${chalk.cyan(subtaskProgressBar)} ${subtaskCompletionPercentage.toFixed(0)}%\n` +
-			`Completed: ${chalk.green(completedSubtasks)}/${totalSubtasks}  In Progress: ${chalk.blue(inProgressSubtasks)}  Pending: ${chalk.yellow(pendingSubtasks)}  Blocked: ${chalk.red(blockedSubtasks)}  Deferred: ${chalk.gray(deferredSubtasks)}  Cancelled: ${chalk.gray(cancelledSubtasks)}\n\n` +
+			`Tasks Progress: ${chalk.greenBright(
+				taskProgressBar
+			)} ${completionPercentage.toFixed(0)}%\n` +
+			`Done: ${chalk.green(doneCount)}  In Progress: ${chalk.blue(
+				inProgressCount
+			)}  Pending: ${chalk.yellow(pendingCount)}  Blocked: ${chalk.red(
+				blockedCount
+			)}  Deferred: ${chalk.gray(deferredCount)}  Cancelled: ${chalk.gray(
+				cancelledCount
+			)}\n\n` +
+			`Subtasks Progress: ${chalk.cyan(
+				subtaskProgressBar
+			)} ${subtaskCompletionPercentage.toFixed(0)}%\n` +
+			`Completed: ${chalk.green(
+				completedSubtasks
+			)}/${totalSubtasks}  In Progress: ${chalk.blue(
+				inProgressSubtasks
+			)}  Pending: ${chalk.yellow(pendingSubtasks)}  Blocked: ${chalk.red(
+				blockedSubtasks
+			)}  Deferred: ${chalk.gray(deferredSubtasks)}  Cancelled: ${chalk.gray(
+				cancelledSubtasks
+			)}\n\n` +
 			chalk.cyan.bold('Priority Breakdown:') +
 			'\n' +
-			`${chalk.red('•')} ${chalk.white('High priority:')} ${data.tasks.filter((t) => t.priority === 'high').length}\n` +
-			`${chalk.yellow('•')} ${chalk.white('Medium priority:')} ${data.tasks.filter((t) => t.priority === 'medium').length}\n` +
-			`${chalk.green('•')} ${chalk.white('Low priority:')} ${data.tasks.filter((t) => t.priority === 'low').length}`;
+			`${chalk.red('•')} ${chalk.white('High priority:')} ${
+				data.tasks.filter((t) => t.priority === 'high').length
+			}\n` +
+			`${chalk.yellow('•')} ${chalk.white('Medium priority:')} ${
+				data.tasks.filter((t) => t.priority === 'medium').length
+			}\n` +
+			`${chalk.green('•')} ${chalk.white('Low priority:')} ${
+				data.tasks.filter((t) => t.priority === 'low').length
+			}`;
 
 		const dependencyDashboardContent =
 			chalk.white.bold('Dependency Status & Next Task') +
 			'\n' +
 			chalk.cyan.bold('Dependency Metrics:') +
 			'\n' +
-			`${chalk.green('•')} ${chalk.white('Tasks with no dependencies:')} ${tasksWithNoDeps}\n` +
-			`${chalk.green('•')} ${chalk.white('Tasks ready to work on:')} ${tasksReadyToWork}\n` +
-			`${chalk.yellow('•')} ${chalk.white('Tasks blocked by dependencies:')} ${tasksWithUnsatisfiedDeps}\n` +
-			`${chalk.magenta('•')} ${chalk.white('Most depended-on task:')} ${mostDependedOnTask ? chalk.cyan(`#${mostDependedOnTaskId} (${maxDependents} dependents)`) : chalk.gray('None')}\n` +
-			`${chalk.blue('•')} ${chalk.white('Avg dependencies per task:')} ${avgDependenciesPerTask.toFixed(1)}\n\n` +
+			`${chalk.green('•')} ${chalk.white(
+				'Tasks with no dependencies:'
+			)} ${tasksWithNoDeps}\n` +
+			`${chalk.green('•')} ${chalk.white(
+				'Tasks ready to work on:'
+			)} ${tasksReadyToWork}\n` +
+			`${chalk.yellow('•')} ${chalk.white(
+				'Tasks blocked by dependencies:'
+			)} ${tasksWithUnsatisfiedDeps}\n` +
+			`${chalk.magenta('•')} ${chalk.white('Most depended-on task:')} ${
+				mostDependedOnTask
+					? chalk.cyan(`#${mostDependedOnTaskId} (${maxDependents} dependents)`)
+					: chalk.gray('None')
+			}\n` +
+			`${chalk.blue('•')} ${chalk.white(
+				'Avg dependencies per task:'
+			)} ${avgDependenciesPerTask.toFixed(1)}\n\n` +
 			chalk.cyan.bold('Next Task to Work On:') +
 			'\n' +
-			`ID: ${chalk.cyan(nextTask ? nextTask.id : 'N/A')} - ${nextTask ? chalk.white.bold(truncate(nextTask.title, 40)) : chalk.yellow('No task available')}\n` +
-			`Priority: ${nextTask ? chalk.white(nextTask.priority || 'medium') : ''}  Dependencies: ${nextTask ? formatDependenciesWithStatus(nextTask.dependencies, data.tasks, true) : ''}`;
+			`ID: ${chalk.cyan(nextTask ? nextTask.id : 'N/A')} - ${
+				nextTask
+					? chalk.white.bold(truncate(nextTask.title, 40))
+					: chalk.yellow('No task available')
+			}\n` +
+			`Priority: ${
+				nextTask ? chalk.white(nextTask.priority || 'medium') : ''
+			}  Dependencies: ${
+				nextTask
+					? formatDependenciesWithStatus(
+							nextTask.dependencies,
+							data.tasks,
+							true
+					  )
+					: ''
+			}`;
 
 		// Calculate width for side-by-side display
 		// Box borders, padding take approximately 4 chars on each side
@@ -2320,7 +2400,9 @@ function listTasks(
 			);
 			filteredTasks.forEach((task) => {
 				console.log(
-					`${chalk.cyan(task.id)}: ${chalk.white(task.title)} - ${getStatusWithColor(task.status)}`
+					`${chalk.cyan(task.id)}: ${chalk.white(
+						task.title
+					)} - ${getStatusWithColor(task.status)}`
 				);
 			});
 		}
@@ -2361,7 +2443,9 @@ function listTasks(
 						};
 						const statusColor =
 							statusColors[status.toLowerCase()] || chalk.white;
-						return `${chalk.cyan(`${nextTask.id}.${subtask.id}`)} [${statusColor(status)}] ${subtask.title}`;
+						return `${chalk.cyan(
+							`${nextTask.id}.${subtask.id}`
+						)} [${statusColor(status)}] ${subtask.title}`;
 					})
 					.join('\n');
 			}
@@ -2374,13 +2458,29 @@ function listTasks(
 							`🔥 Next Task to Work On: #${nextTask.id} - ${nextTask.title}`
 						) +
 						'\n\n' +
-						`${chalk.white('Priority:')} ${priorityColors[nextTask.priority || 'medium'](nextTask.priority || 'medium')}   ${chalk.white('Status:')} ${getStatusWithColor(nextTask.status, true)}\n` +
-						`${chalk.white('Dependencies:')} ${nextTask.dependencies && nextTask.dependencies.length > 0 ? formatDependenciesWithStatus(nextTask.dependencies, data.tasks, true) : chalk.gray('None')}\n\n` +
+						`${chalk.white('Priority:')} ${priorityColors[
+							nextTask.priority || 'medium'
+						](nextTask.priority || 'medium')}   ${chalk.white(
+							'Status:'
+						)} ${getStatusWithColor(nextTask.status, true)}\n` +
+						`${chalk.white('Dependencies:')} ${
+							nextTask.dependencies && nextTask.dependencies.length > 0
+								? formatDependenciesWithStatus(
+										nextTask.dependencies,
+										data.tasks,
+										true
+								  )
+								: chalk.gray('None')
+						}\n\n` +
 						`${chalk.white('Description:')} ${nextTask.description}` +
 						subtasksSection +
 						'\n\n' +
-						`${chalk.cyan('Start working:')} ${chalk.yellow(`task-master set-status --id=${nextTask.id} --status=in-progress`)}\n` +
-						`${chalk.cyan('View details:')} ${chalk.yellow(`task-master show ${nextTask.id}`)}`,
+						`${chalk.cyan('Start working:')} ${chalk.yellow(
+							`task-master set-status --id=${nextTask.id} --status=in-progress`
+						)}\n` +
+						`${chalk.cyan('View details:')} ${chalk.yellow(
+							`task-master show ${nextTask.id}`
+						)}`,
 					{
 						padding: { left: 2, right: 2, top: 1, bottom: 1 },
 						borderColor: '#FF8800',
@@ -2417,9 +2517,15 @@ function listTasks(
 			boxen(
 				chalk.white.bold('Suggested Next Steps:') +
 					'\n\n' +
-					`${chalk.cyan('1.')} Run ${chalk.yellow('task-master next')} to see what to work on next\n` +
-					`${chalk.cyan('2.')} Run ${chalk.yellow('task-master expand --id=<id>')} to break down a task into subtasks\n` +
-					`${chalk.cyan('3.')} Run ${chalk.yellow('task-master set-status --id=<id> --status=done')} to mark a task as complete`,
+					`${chalk.cyan('1.')} Run ${chalk.yellow(
+						'task-master next'
+					)} to see what to work on next\n` +
+					`${chalk.cyan('2.')} Run ${chalk.yellow(
+						'task-master expand --id=<id>'
+					)} to break down a task into subtasks\n` +
+					`${chalk.cyan('3.')} Run ${chalk.yellow(
+						'task-master set-status --id=<id> --status=done'
+					)} to mark a task as complete`,
 				{
 					padding: 1,
 					borderColor: 'gray',
@@ -2838,7 +2944,10 @@ async function expandAllTasks(
 		// Process each task
 		for (const task of tasksToExpand) {
 			if (loadingIndicator && outputFormat === 'text') {
-				loadingIndicator.text = `Expanding task ${task.id}: ${truncate(task.title, 30)} (${expandedCount + 1}/${tasksToExpand.length})`;
+				loadingIndicator.text = `Expanding task ${task.id}: ${truncate(
+					task.title,
+					30
+				)} (${expandedCount + 1}/${tasksToExpand.length})`;
 			}
 
 			// Report progress to MCP if available
@@ -2957,7 +3066,9 @@ async function expandAllTasks(
 			expandedCount,
 			tasksToExpand: tasksToExpand.length,
 			expansionErrors,
-			message: `Successfully expanded ${expandedCount} out of ${tasksToExpand.length} tasks${expansionErrors > 0 ? ` (${expansionErrors} errors)` : ''}`
+			message: `Successfully expanded ${expandedCount} out of ${
+				tasksToExpand.length
+			} tasks${expansionErrors > 0 ? ` (${expansionErrors} errors)` : ''}`
 		};
 	} catch (error) {
 		report(`Error expanding tasks: ${error.message}`, 'error');
@@ -3005,17 +3116,23 @@ async function expandAllTasks(
 				console.log(chalk.bold('\nNext Steps:'));
 				console.log(
 					chalk.cyan(
-						`1. Run ${chalk.yellow('task-master list --with-subtasks')} to see all tasks with their subtasks`
+						`1. Run ${chalk.yellow(
+							'task-master list --with-subtasks'
+						)} to see all tasks with their subtasks`
 					)
 				);
 				console.log(
 					chalk.cyan(
-						`2. Run ${chalk.yellow('task-master next')} to find the next task to work on`
+						`2. Run ${chalk.yellow(
+							'task-master next'
+						)} to find the next task to work on`
 					)
 				);
 				console.log(
 					chalk.cyan(
-						`3. Run ${chalk.yellow('task-master set-status --id=<taskId> --status=in-progress')} to start working on a task`
+						`3. Run ${chalk.yellow(
+							'task-master set-status --id=<taskId> --status=in-progress'
+						)} to start working on a task`
 					)
 				);
 			}
@@ -3119,7 +3236,9 @@ function clearSubtasks(tasksPath, taskIds) {
 		console.log(
 			boxen(
 				chalk.green(
-					`Successfully cleared subtasks from ${chalk.bold(clearedCount)} task(s)`
+					`Successfully cleared subtasks from ${chalk.bold(
+						clearedCount
+					)} task(s)`
 				),
 				{
 					padding: 1,
@@ -3135,8 +3254,12 @@ function clearSubtasks(tasksPath, taskIds) {
 			boxen(
 				chalk.white.bold('Next Steps:') +
 					'\n\n' +
-					`${chalk.cyan('1.')} Run ${chalk.yellow('task-master expand --id=<id>')} to generate new subtasks\n` +
-					`${chalk.cyan('2.')} Run ${chalk.yellow('task-master list --with-subtasks')} to verify changes`,
+					`${chalk.cyan('1.')} Run ${chalk.yellow(
+						'task-master expand --id=<id>'
+					)} to generate new subtasks\n` +
+					`${chalk.cyan('2.')} Run ${chalk.yellow(
+						'task-master list --with-subtasks'
+					)} to verify changes`,
 				{
 					padding: 1,
 					borderColor: 'cyan',
@@ -3547,7 +3670,9 @@ async function addTask(
 						chalk.white(`Status: ${getStatusWithColor(newTask.status)}`) +
 						'\n' +
 						chalk.white(
-							`Priority: ${chalk.keyword(getPriorityColor(newTask.priority))(newTask.priority)}`
+							`Priority: ${chalk.keyword(getPriorityColor(newTask.priority))(
+								newTask.priority
+							)}`
 						) +
 						'\n' +
 						(dependencies.length > 0
@@ -3557,15 +3682,21 @@ async function addTask(
 						chalk.white.bold('Next Steps:') +
 						'\n' +
 						chalk.cyan(
-							`1. Run ${chalk.yellow(`task-master show ${newTaskId}`)} to see complete task details`
+							`1. Run ${chalk.yellow(
+								`task-master show ${newTaskId}`
+							)} to see complete task details`
 						) +
 						'\n' +
 						chalk.cyan(
-							`2. Run ${chalk.yellow(`task-master set-status --id=${newTaskId} --status=in-progress`)} to start working on it`
+							`2. Run ${chalk.yellow(
+								`task-master set-status --id=${newTaskId} --status=in-progress`
+							)} to start working on it`
 						) +
 						'\n' +
 						chalk.cyan(
-							`3. Run ${chalk.yellow(`task-master expand --id=${newTaskId}`)} to break it down into subtasks`
+							`3. Run ${chalk.yellow(
+								`task-master expand --id=${newTaskId}`
+							)} to break it down into subtasks`
 						),
 					{ padding: 1, borderColor: 'green', borderStyle: 'round' }
 				)
@@ -3879,7 +4010,9 @@ DO NOT include any text before or after the JSON array. No explanations, no mark
 							streamingInterval = setInterval(() => {
 								readline.cursorTo(process.stdout, 0);
 								process.stdout.write(
-									`Receiving streaming response from Claude${'.'.repeat(dotCount)}`
+									`Receiving streaming response from Claude${'.'.repeat(
+										dotCount
+									)}`
 								);
 								dotCount = (dotCount + 1) % 4;
 							}, 500);
@@ -4220,7 +4353,10 @@ DO NOT include any text before or after the JSON array. No explanations, no mark
 										}
 									} catch (taskParseError) {
 										reportLog(
-											`Could not parse individual task: ${taskMatch.substring(0, 30)}...`,
+											`Could not parse individual task: ${taskMatch.substring(
+												0,
+												30
+											)}...`,
 											'warn'
 										);
 
@@ -4228,7 +4364,10 @@ DO NOT include any text before or after the JSON array. No explanations, no mark
 										if (outputFormat === 'text') {
 											console.log(
 												chalk.yellow(
-													`Could not parse individual task: ${taskMatch.substring(0, 30)}...`
+													`Could not parse individual task: ${taskMatch.substring(
+														0,
+														30
+													)}...`
 												)
 											);
 										}
@@ -4329,14 +4468,18 @@ DO NOT include any text before or after the JSON array. No explanations, no mark
 				// Only show missing task warnings for text output (CLI)
 				if (missingTaskIds.length > 0 && outputFormat === 'text') {
 					reportLog(
-						`Missing analysis for ${missingTaskIds.length} tasks: ${missingTaskIds.join(', ')}`,
+						`Missing analysis for ${
+							missingTaskIds.length
+						} tasks: ${missingTaskIds.join(', ')}`,
 						'warn'
 					);
 
 					if (outputFormat === 'text') {
 						console.log(
 							chalk.yellow(
-								`Missing analysis for ${missingTaskIds.length} tasks: ${missingTaskIds.join(', ')}`
+								`Missing analysis for ${
+									missingTaskIds.length
+								} tasks: ${missingTaskIds.join(', ')}`
 							)
 						);
 						console.log(chalk.blue(`Attempting to analyze missing tasks...`));
@@ -4414,7 +4557,9 @@ DO NOT include any text before or after the JSON array. No explanations, no mark
 					console.log(`Medium complexity tasks: ${mediumComplexity}`);
 					console.log(`Low complexity tasks: ${lowComplexity}`);
 					console.log(
-						`Sum verification: ${highComplexity + mediumComplexity + lowComplexity} (should equal ${totalAnalyzed})`
+						`Sum verification: ${
+							highComplexity + mediumComplexity + lowComplexity
+						} (should equal ${totalAnalyzed})`
 					);
 					console.log(
 						`Research-backed analysis: ${useResearch ? 'Yes' : 'No'}`
@@ -4428,9 +4573,15 @@ DO NOT include any text before or after the JSON array. No explanations, no mark
 						boxen(
 							chalk.white.bold('Suggested Next Steps:') +
 								'\n\n' +
-								`${chalk.cyan('1.')} Run ${chalk.yellow('task-master complexity-report')} to review detailed findings\n` +
-								`${chalk.cyan('2.')} Run ${chalk.yellow('task-master expand --id=<id>')} to break down complex tasks\n` +
-								`${chalk.cyan('3.')} Run ${chalk.yellow('task-master expand --all')} to expand all pending tasks based on complexity`,
+								`${chalk.cyan('1.')} Run ${chalk.yellow(
+									'task-master complexity-report'
+								)} to review detailed findings\n` +
+								`${chalk.cyan('2.')} Run ${chalk.yellow(
+									'task-master expand --id=<id>'
+								)} to break down complex tasks\n` +
+								`${chalk.cyan('3.')} Run ${chalk.yellow(
+									'task-master expand --all'
+								)} to expand all pending tasks based on complexity`,
 							{
 								padding: 1,
 								borderColor: 'cyan',
@@ -5124,7 +5275,9 @@ Provide concrete examples, code snippets, or implementation details when relevan
 							streamingInterval = setInterval(() => {
 								readline.cursorTo(process.stdout, 0);
 								process.stdout.write(
-									`Receiving streaming response from Claude${'.'.repeat(dotCount)}`
+									`Receiving streaming response from Claude${'.'.repeat(
+										dotCount
+									)}`
 								);
 								dotCount = (dotCount + 1) % 4;
 							}, 500);
@@ -5398,7 +5551,7 @@ Provide concrete examples, code snippets, or implementation details when relevan
 					'  1. Set your Perplexity API key: export PERPLEXITY_API_KEY=your_api_key_here'
 				);
 				console.log(
-					'  2. Or run without the research flag: task-master update-subtask --id=<id> --prompt=\"...\"'
+					'  2. Or run without the research flag: task-master update-subtask --id=<id> --prompt="..."'
 				);
 			} else if (error.message?.includes('overloaded')) {
 				// Catch final overload error
@@ -5416,7 +5569,7 @@ Provide concrete examples, code snippets, or implementation details when relevan
 					'  1. Run task-master list --with-subtasks to see all available subtask IDs'
 				);
 				console.log(
-					'  2. Use a valid subtask ID with the --id parameter in format \"parentId.subtaskId\"'
+					'  2. Use a valid subtask ID with the --id parameter in format "parentId.subtaskId"'
 				);
 			} else if (error.message?.includes('empty response from AI')) {
 				console.log(
@@ -5642,9 +5795,21 @@ Task ID: ${task.id}
 Title: ${task.title}
 Description: ${task.description || 'No description provided'}
 Current details: ${task.details || 'No details provided'}
-${additionalContext ? `\nAdditional context to consider: ${additionalContext}` : ''}
-${taskAnalysis ? `\nComplexity analysis: This task has a complexity score of ${taskAnalysis.complexityScore}/10.` : ''}
-${taskAnalysis && taskAnalysis.reasoning ? `\nReasoning for complexity: ${taskAnalysis.reasoning}` : ''}
+${
+	additionalContext
+		? `\nAdditional context to consider: ${additionalContext}`
+		: ''
+}
+${
+	taskAnalysis
+		? `\nComplexity analysis: This task has a complexity score of ${taskAnalysis.complexityScore}/10.`
+		: ''
+}
+${
+	taskAnalysis && taskAnalysis.reasoning
+		? `\nReasoning for complexity: ${taskAnalysis.reasoning}`
+		: ''
+}
 
 Subtasks should:
 1. Be specific and actionable implementation steps

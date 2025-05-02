@@ -36,7 +36,9 @@ export function registerRemoveDependencyTool(server) {
 		execute: async (args, { log, session }) => {
 			try {
 				log.info(
-					`Removing dependency for task ${args.id} from ${args.dependsOn} with args: ${JSON.stringify(args)}`
+					`Removing dependency for task ${args.id} from ${
+						args.dependsOn
+					} with args: ${JSON.stringify(args)}`
 				);
 
 				// Get project root from args or session

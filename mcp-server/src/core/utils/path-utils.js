@@ -108,7 +108,11 @@ export function findTasksJsonPath(args, log) {
 				searchedPaths: error.message
 			};
 
-			error.message = `Tasks file not found in any of the expected locations relative to project root "${projectRoot}" (from session).\nDebug Info: ${JSON.stringify(debugInfo, null, 2)}`;
+			error.message = `Tasks file not found in any of the expected locations relative to project root "${projectRoot}" (from session).\nDebug Info: ${JSON.stringify(
+				debugInfo,
+				null,
+				2
+			)}`;
 			throw error;
 		}
 	}
@@ -204,7 +208,9 @@ function findTasksJsonInDirectory(dirPath, explicitFilePath, log) {
 
 	// If no file was found, throw an error
 	const error = new Error(
-		`Tasks file not found in any of the expected locations relative to ${dirPath}: ${possiblePaths.join(', ')}`
+		`Tasks file not found in any of the expected locations relative to ${dirPath}: ${possiblePaths.join(
+			', '
+		)}`
 	);
 	error.code = 'TASKS_FILE_NOT_FOUND';
 	throw error;

@@ -67,11 +67,15 @@ export function registerNextTaskTool(server) {
 
 				if (result.success) {
 					log.info(
-						`Successfully found next task: ${result.data?.task?.id || 'No available tasks'}`
+						`Successfully found next task: ${
+							result.data?.task?.id || 'No available tasks'
+						}`
 					);
 				} else {
 					log.error(
-						`Failed to find next task: ${result.error?.message || 'Unknown error'}`
+						`Failed to find next task: ${
+							result.error?.message || 'Unknown error'
+						}`
 					);
 				}
 

@@ -21,10 +21,14 @@ export async function initializeProjectDirect(args, log, context = {}) {
 	let targetDirectory = null;
 
 	log.info(
-		`CONTEXT received in direct function: ${context ? JSON.stringify(Object.keys(context)) : 'MISSING or Falsy'}`
+		`CONTEXT received in direct function: ${
+			context ? JSON.stringify(Object.keys(context)) : 'MISSING or Falsy'
+		}`
 	);
 	log.info(
-		`SESSION extracted in direct function: ${session ? 'Exists' : 'MISSING or Falsy'}`
+		`SESSION extracted in direct function: ${
+			session ? 'Exists' : 'MISSING or Falsy'
+		}`
 	);
 	log.info(`Args received in direct function: ${JSON.stringify(args)}`);
 

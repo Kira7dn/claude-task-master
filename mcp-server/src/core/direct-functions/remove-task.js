@@ -57,7 +57,9 @@ export async function removeTaskDirect(args, log) {
 		const taskIdArray = id.split(',').map((taskId) => taskId.trim());
 
 		log.info(
-			`Removing ${taskIdArray.length} task(s) with ID(s): ${taskIdArray.join(', ')} from ${tasksJsonPath}`
+			`Removing ${taskIdArray.length} task(s) with ID(s): ${taskIdArray.join(
+				', '
+			)} from ${tasksJsonPath}`
 		);
 
 		// Validate all task IDs exist before proceeding
@@ -82,7 +84,9 @@ export async function removeTaskDirect(args, log) {
 				success: false,
 				error: {
 					code: 'INVALID_TASK_ID',
-					message: `The following tasks were not found: ${invalidTasks.join(', ')}`
+					message: `The following tasks were not found: ${invalidTasks.join(
+						', '
+					)}`
 				},
 				fromCache: false
 			};

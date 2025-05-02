@@ -4,6 +4,7 @@
 - **Use consistent naming conventions, file structure, and architecture patterns** as described in `PLANNING.md`. -->
 
 ### 🧱 Code Structure & Modularity
+
 - **Must research doc before generate code.** Use resolve-library-id tool to Resolve a general package name into a Context7-compatible library ID and get-library-docs tool to Fetch up-to-date documentation for a library.
 - **Never create a file longer than 500 lines of code.** If a file approaches this limit, refactor by splitting it into modules or helper files.
 - **Never create a file longer than 500 lines of code.** If a file approaches this limit, refactor by splitting it into modules or helper files.
@@ -11,6 +12,7 @@
 - **Use clear, consistent imports** (prefer relative imports within packages).
 
 ### 🧪 Testing & Reliability
+
 - **Always create Pytest unit tests for new features** (functions, classes, routes, etc).
 - **After updating any logic**, check whether existing unit tests need to be updated. If so, do it.
 - **Tests should live in a `/tests` folder** mirroring the main app structure.
@@ -48,6 +50,7 @@
 - When writing complex logic, **add an inline `# Reason:` comment** explaining the why, not just the what. -->
 
 ### 🧠 AI Behavior Rules
+
 - **Never assume missing context. Ask questions if uncertain.**
 - **Never hallucinate libraries or functions** – only use known, verified Python packages.
 - **Always confirm file paths and module names** exist before referencing them in code or tests.

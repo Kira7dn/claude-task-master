@@ -162,39 +162,125 @@ async function callClaude(
 ) {
 	try {
 		log('info', 'Calling Claude...');
+		// 		const systemPrompt =`You are an AI assistant tasked with breaking down a Product Requirements Document (PRD) into a set of sequential development tasks. Based on the PRD provided, your goal is to create well-structured, actionable development tasks categorized into the following layers:
 
+		// ### Layers:
+		// 1. **Foundation Layer**:
+		//    - Tasks that establish the project's core setup and remain unchanged throughout the project.
+		//    - Includes tasks for setting up the framework, folder structure, microservices, database schema, CI/CD pipelines, and other foundational elements.
+		//    - Ensure these tasks are logically ordered and independent of application-specific functionality.
+
+		// 2. **Functional Layer**:
+		//    - Feature-specific tasks that implement application functionality as user stories.
+		//    - Break down user stories or features into independent, actionable tasks.
+		//    - Each task should build upon the foundation but not depend on other functional tasks.
+
+		// 3. **Enhancement Layer**:
+		//    - Tasks that improve or extend existing functionality.
+		//    - Includes tasks like adding subtasks, handling implementation drift, or improving content quality with external APIs.
+		//    - These tasks depend on Functional Layer tasks but are not critical for the core functionality.
+
+		// 4. **Advanced Layer**:
+		//    - Tasks that add advanced features or optimizations.
+		//    - Includes tasks like batch operations, research-backed subtask generation, or project initialization workflows.
+		//    - These tasks are optional and provide additional value for complex projects.
+
+		// 5. **Integration Layer**:
+		//    - Tasks that integrate the system with external tools or services.
+		//    - Includes tasks like integrating Cursor AI, defining agent workflows, or adding external API support.
+		//    - These tasks depend on the Foundation Layer and may enhance Functional or Enhancement Layers.
+
+		// ### Task Structure:
+		// Each task should follow this JSON format:
+		// {
+		//   "id": number,
+		//   "title": string,
+		//   "description": string,
+		//   "layer": "foundation" | "functional" | "enhancement" | "advanced" | "integration",
+		//   "status": "pending",
+		//   "dependencies": number[] (IDs of tasks this depends on),
+		//   "priority": "high" | "medium" | "low",
+		//   "details": string (implementation details),
+		//   "testStrategy": string (validation approach)
+		// }
+
+		// ### Guidelines:
+		// 1. Number tasks sequentially, starting from 1.
+		// 2. Ensure tasks in the Foundation Layer are completed before tasks in other layers.
+		// 3. Assign appropriate dependencies and priorities to tasks.
+		// 4. Provide detailed implementation guidance in the "details" field.
+		// 5. Include a clear validation/testing approach for each task.
+		// 6. Ensure tasks in the Enhancement, Advanced, and Integration Layers are modular and optional, enhancing the core functionality.
+
+		// ### Output:
+		// Return a JSON object with the following structure:
+		// {
+		//   "tasks": [
+		//     {
+		//       "id": 1,
+		//       "title": "Example Task Title",
+		//       "description": "Brief description of the task",
+		//       "layer": "foundation",
+		//       "status": "pending",
+		//       "dependencies": [0],
+		//       "priority": "high",
+		//       "details": "Detailed implementation guidance",
+		//       "testStrategy": "Approach for validating this task"
+		//     },
+		//     // ... more tasks ...
+		//   ],
+		//   "metadata": {
+		//     "projectName": "PRD Implementation",
+		//     "totalTasks": <num_tasks>,
+		//     "sourceFile": "<prd_path>",
+		//     "generatedAt": "YYYY-MM-DD"
+		//   }
+		// }
+
+		// ### Notes:
+		// - Ensure the Foundation Layer is comprehensive and covers all foundational aspects of the project.
+		// - Functional Layer tasks should be modular and implement user stories or features independently.
+		// - Enhancement, Advanced, and Integration Layers should provide additional value without being critical for the core functionality.
+		// - Return valid JSON only, with no additional explanation or comments.`
 		// Build the system prompt
-		const systemPrompt = `You are an AI assistant tasked with breaking down a Product Requirements Document (PRD) into a set of sequential development tasks. Your goal is to create exactly <num_tasks>${numTasks}</num_tasks> well-structured, actionable development tasks based on the PRD provided.
+		const systemPrompt = `You are an AI assistant tasked with breaking down a Product Requirements Document (PRD) into a set of sequential development tasks. Based on the PRD provided, your goal is to create exactly <num_tasks>${numTasks}</num_tasks> well-structured, actionable development tasks.
 
-First, carefully read and analyze the attached PRD
+### Instructions:
+- Carefully read and analyze the attached PRD to identify the base structure requirements and the user stories or features to be implemented.
+- Before creating the task list, work through the following steps inside <prd_breakdown> tags in your thinking block:
+	1. List the key components of the PRD
+	2. Identify the main features and functionalities described
+	3. Note any specific technical requirements or constraints mentioned
+	4. Outline a high-level sequence of tasks that would be needed to implement the PRD by classify tasks in two layers:
+		- **Foundation Layer Tasks**: 
+			- These are foundational tasks that establish the project's core setup that will remain unchanged throughout the project. 
+			- Include tasks for setting up the framework, folder structure, microservices, database schema, CI/CD pipelines, and other foundational elements.
+			- Ensure these tasks are logically ordered and independent of application-specific functionality.
+		- **Functional Layer Tasks**:
+			- These are feature-specific tasks that implement application functionality as user stories. 
+			- Break down user stories or features into independent, actionable tasks.
+			- Each task should build upon the foundation but not depend on other functional tasks.
+- Consider dependencies, maintainability, and the fact that you don't have access to any existing codebase. Balance between providing detailed task descriptions and maintaining a high-level perspective.
 
-Before creating the task list, work through the following steps inside <prd_breakdown> tags in your thinking block:
-
-1. List the key components of the PRD
-2. Identify the main features and functionalities described
-3. Note any specific technical requirements or constraints mentioned
-4. Outline a high-level sequence of tasks that would be needed to implement the PRD
-
-Consider dependencies, maintainability, and the fact that you don't have access to any existing codebase. Balance between providing detailed task descriptions and maintaining a high-level perspective.
-
-After your breakdown, create a JSON object containing an array of tasks and a metadata object. Each task should follow this structure:
-
+### Task Structure:
+Each task should follow this JSON format:
 {
   "id": number,
   "title": string,
   "description": string,
+  "layer": "foundation" | "functional",
   "status": "pending",
   "dependencies": number[] (IDs of tasks this depends on),
   "priority": "high" | "medium" | "low",
   "details": string (implementation details),
   "testStrategy": string (validation approach)
 }
-
-Guidelines for creating tasks:
+  
+### Guidelines:
 1. Number tasks from 1 to <num_tasks>${numTasks}</num_tasks>.
 2. Make each task atomic and focused on a single responsibility.
 3. Order tasks logically, considering dependencies and implementation sequence.
-4. Start with setup and core functionality, then move to advanced features.
+4. Start with foundation and core functionality, then move to advanced features.
 5. Provide a clear validation/testing approach for each task.
 6. Set appropriate dependency IDs (tasks can only depend on lower-numbered tasks).
 7. Assign priority based on criticality and dependency order.
@@ -203,14 +289,15 @@ Guidelines for creating tasks:
 10. Fill in gaps left by the PRD while preserving all explicit requirements.
 11. Provide the most direct path to implementation, avoiding over-engineering.
 
-The final output should be valid JSON with this structure:
-
+### Output:
+Return a JSON object with the following structure:
 {
   "tasks": [
     {
       "id": 1,
       "title": "Example Task Title",
       "description": "Brief description of the task",
+      "layer": "foundation",
       "status": "pending",
       "dependencies": [0],
       "priority": "high",
@@ -227,9 +314,12 @@ The final output should be valid JSON with this structure:
   }
 }
 
-Remember to provide comprehensive task details that are LLM-friendly, consider dependencies and maintainability carefully, and keep in mind that you don't have the existing codebase as context. Aim for a balance between detailed guidance and high-level planning.
-
-Your response should be valid JSON only, with no additional explanation or comments. Do not duplicate or rehash any of the work you did in the prd_breakdown section in your final output.`;
+### Notes:
+- Remember to provide comprehensive task details that are LLM-friendly, consider dependencies and maintainability carefully, and keep in mind that you don't have the existing codebase as context. 
+- Aim for a balance between detailed guidance and high-level planning.
+- Ensure the foundation layer tasks are comprehensive and cover all foundational aspects of the project.
+- Functional layer tasks should be modular and implement user stories or features independently.
+- Return valid JSON object only, with no additional explanation or comments.`;
 
 		// Use streaming request to handle large responses and show progress
 		return await handleStreamingRequest(

@@ -173,7 +173,7 @@ async function parsePRD(
 			? {
 					...existingTasks,
 					tasks: [...existingTasks.tasks, ...newTasksData.tasks]
-			  }
+				}
 			: newTasksData;
 
 		// Create the directory if it doesn't exist
@@ -1457,6 +1457,7 @@ function generateTaskFiles(tasksPath, outputDir, options = {}) {
 			let content = `# Task ID: ${task.id}\n`;
 			content += `# Title: ${task.title}\n`;
 			content += `# Status: ${task.status || 'pending'}\n`;
+			content += `# Layer: ${task.layer}\n`;
 
 			// Format dependencies with their status
 			if (task.dependencies && task.dependencies.length > 0) {
@@ -1819,7 +1820,7 @@ function listTasks(
 						(task) =>
 							task.status &&
 							task.status.toLowerCase() === statusFilter.toLowerCase()
-				  )
+					)
 				: data.tasks; // Default to all tasks if no filter or filter is 'all'
 
 		// Calculate completion statistics
@@ -2037,17 +2038,17 @@ function listTasks(
 		const nextTaskInfo = nextTask
 			? `ID: ${chalk.cyan(nextTask.id)} - ${chalk.white.bold(
 					truncate(nextTask.title, 40)
-			  )}\n` +
-			  `Priority: ${chalk.white(
+				)}\n` +
+				`Priority: ${chalk.white(
 					nextTask.priority || 'medium'
-			  )}  Dependencies: ${formatDependenciesWithStatus(
+				)}  Dependencies: ${formatDependenciesWithStatus(
 					nextTask.dependencies,
 					data.tasks,
 					true
-			  )}`
+				)}`
 			: chalk.yellow(
 					'No eligible tasks found. All tasks are either completed or have unsatisfied dependencies.'
-			  );
+				);
 
 		// Get terminal width - more reliable method
 		let terminalWidth;
@@ -2139,7 +2140,7 @@ function listTasks(
 							nextTask.dependencies,
 							data.tasks,
 							true
-					  )
+						)
 					: ''
 			}`;
 
@@ -2469,7 +2470,7 @@ function listTasks(
 										nextTask.dependencies,
 										data.tasks,
 										true
-								  )
+									)
 								: chalk.gray('None')
 						}\n\n` +
 						`${chalk.white('Description:')} ${nextTask.description}` +

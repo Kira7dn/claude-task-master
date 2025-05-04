@@ -78,6 +78,7 @@
 		"assets/**",
 		".cursor/**",
 		"README-task-master.md",
+		"task_integration.mdc",
 		"index.js",
 		"bin/**",
 		"mcp-server/**"

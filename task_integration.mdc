@@ -1,0 +1,240 @@
+# Task Integration Guide
+
+## 1. **Project Structure Standards**
+
+- **Folder Organization**:
+  - `src/`: Chứa mã nguồn chính của ứng dụng.
+    - `core/`: Chứa các thành phần cốt lõi như logic nghiệp vụ, kết nối cơ sở dữ liệu.
+    - `tools/`: Chứa các công cụ hỗ trợ hoặc tiện ích.
+  - `tests/`: Chứa các bài kiểm tra đơn vị và tích hợp.
+    - `unit/`: Kiểm tra đơn vị cho từng module.
+    - `integration/`: Kiểm tra tích hợp giữa các thành phần.
+- **Naming Conventions**:
+  - Tên file và folder sử dụng `kebab-case`.
+  - Tên class, function, và biến sử dụng `camelCase` hoặc `PascalCase` tùy ngữ cảnh.
+
+**Example**:
+
+```plaintext
+src/
+  core/
+    database/
+      mongo/
+        user.model.js
+        user.schema.js
+        mongo-connection.js
+    services/
+      user.service.js
+  tools/
+    logger.js
+```
+
+---
+
+## 2. **Database Interaction Standards**
+
+- **MongoDB Integration**:
+  - **Folder**: Tất cả các file liên quan đến MongoDB được lưu trong `src/core/database/mongo/`.
+  - **Schema Naming**: Tên schema sử dụng dạng `PascalCase` (e.g., `UserSchema`).
+  - **Model Naming**: Tên model sử dụng dạng `PascalCase` (e.g., `UserModel`).
+  - **Connection**: File `mongo-connection.js` chịu trách nhiệm kết nối với MongoDB.
+
+**Code Usage Example**:
+
+```javascript
+// src/core/database/mongo/mongo-connection.js
+const mongoose = require('mongoose');
+
+const connectMongoDB = async () => {
+	try {
+		await mongoose.connect(process.env.MONGO_URI, {
+			useNewUrlParser: true,
+			useUnifiedTopology: true
+		});
+		console.log('MongoDB connected successfully');
+	} catch (error) {
+		console.error('MongoDB connection error:', error);
+		process.exit(1);
+	}
+};
+
+module.exports = connectMongoDB;
+```
+
+```javascript
+// src/core/database/mongo/user.schema.js
+const mongoose = require('mongoose');
+
+const UserSchema = new mongoose.Schema({
+	name: { type: String, required: true },
+	email: { type: String, required: true, unique: true },
+	password: { type: String, required: true }
+});
+
+module.exports = UserSchema;
+```
+
+```javascript
+// src/core/database/mongo/user.model.js
+const mongoose = require('mongoose');
+const UserSchema = require('./user.schema');
+
+const UserModel = mongoose.model('User', UserSchema);
+
+module.exports = UserModel;
+```
+
+---
+
+## 3. **Service Layer Standards**
+
+- **Folder**: Tất cả các service logic được lưu trong `src/core/services/`.
+- **Function Naming**: Sử dụng `camelCase` cho các function.
+- **Error Handling**: Sử dụng `try-catch` để xử lý lỗi và ghi log.
+
+**Code Usage Example**:
+
+```javascript
+// src/core/services/user.service.js
+const UserModel = require('../database/mongo/user.model');
+
+const createUser = async (userData) => {
+	try {
+		const user = new UserModel(userData);
+		return await user.save();
+	} catch (error) {
+		console.error('Error creating user:', error);
+		throw new Error('User creation failed');
+	}
+};
+
+const getUserByEmail = async (email) => {
+	try {
+		return await UserModel.findOne({ email });
+	} catch (error) {
+		console.error('Error fetching user by email:', error);
+		throw new Error('User fetch failed');
+	}
+};
+
+module.exports = { createUser, getUserByEmail };
+```
+
+---
+
+## 4. **Testing Standards**
+
+- **Folder Structure**:
+  - Unit tests nằm trong `tests/unit/` và có cùng cấu trúc với `src/`.
+  - Integration tests nằm trong `tests/integration/`.
+- **Test Naming**:
+  - Tên file test sử dụng dạng `*.test.js`.
+- **Test Cases**:
+  - Mỗi function cần có ít nhất:
+    - 1 test cho trường hợp thành công.
+    - 1 test cho trường hợp edge case.
+    - 1 test cho trường hợp thất bại.
+
+**Code Usage Example**:
+
+```javascript
+// tests/unit/core/services/user.service.test.js
+const {
+	createUser,
+	getUserByEmail
+} = require('../../../src/core/services/user.service');
+const UserModel = require('../../../src/core/database/mongo/user.model');
+
+jest.mock('../../../src/core/database/mongo/user.model');
+
+describe('User Service', () => {
+	it('should create a user successfully', async () => {
+		const mockUser = {
+			name: 'John Doe',
+			email: 'john@example.com',
+			password: 'password123'
+		};
+		UserModel.prototype.save = jest.fn().mockResolvedValue(mockUser);
+
+		const result = await createUser(mockUser);
+		expect(result).toEqual(mockUser);
+	});
+
+	it('should throw an error if user creation fails', async () => {
+		UserModel.prototype.save = jest
+			.fn()
+			.mockRejectedValue(new Error('Database error'));
+
+		await expect(createUser({})).rejects.toThrow('User creation failed');
+	});
+});
+```
+
+---
+
+## 5. **Logging Standards**
+
+- **Logger Utility**:
+  - Sử dụng một module logger chung trong `src/tools/logger.js`.
+- **Log Levels**:
+  - `info`: Ghi lại các thông tin quan trọng.
+  - `error`: Ghi lại lỗi.
+
+**Code Usage Example**:
+
+```javascript
+// src/tools/logger.js
+const winston = require('winston');
+
+const logger = winston.createLogger({
+	level: 'info',
+	format: winston.format.json(),
+	transports: [
+		new winston.transports.Console(),
+		new winston.transports.File({ filename: 'error.log', level: 'error' })
+	]
+});
+
+module.exports = logger;
+```
+
+---
+
+## 6. **API Standards**
+
+- **Framework**: Sử dụng `FastAPI` hoặc `Express.js` cho API.
+- **Route Structure**:
+  - Routes được lưu trong `src/routes/`.
+- **Validation**:
+  - Sử dụng `pydantic` (Python) hoặc `Joi` (Node.js) để validate dữ liệu.
+
+**Code Usage Example**:
+
+```javascript
+// src/routes/user.routes.js
+const express = require('express');
+const { createUser, getUserByEmail } = require('../core/services/user.service');
+
+const router = express.Router();
+
+router.post('/users', async (req, res) => {
+	try {
+		const user = await createUser(req.body);
+		res.status(201).json(user);
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+});
+
+router.get('/users/:email', async (req, res) => {
+	try {
+		const user = await getUserByEmail(req.params.email);
+		if (!user) return res.status(404).json({ error: 'User not found' });
+		res.status(200).json(user);
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+});
+
+module.exports = router;
+```

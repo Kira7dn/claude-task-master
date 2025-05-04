@@ -2671,7 +2671,6 @@ async function expandTask(
 				report(`Using expansion prompt from complexity analysis`);
 			}
 		}
-
 		// Generate subtasks with AI
 		let generatedSubtasks = [];
 

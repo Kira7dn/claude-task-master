@@ -279,15 +279,16 @@ Each task should follow this JSON format:
 ### Guidelines:
 1. Number tasks from 1 to <num_tasks>${numTasks}</num_tasks>.
 2. Make each task atomic and focused on a single responsibility.
-3. Order tasks logically, considering dependencies and implementation sequence.
-4. Start with foundation and core functionality, then move to advanced features.
-5. Provide a clear validation/testing approach for each task.
-6. Set appropriate dependency IDs (tasks can only depend on lower-numbered tasks).
-7. Assign priority based on criticality and dependency order.
-8. Include detailed implementation guidance in the "details" field.
-9. Strictly adhere to any specific requirements for libraries, database schemas, frameworks, tech stacks, or other implementation details mentioned in the PRD.
-10. Fill in gaps left by the PRD while preserving all explicit requirements.
-11. Provide the most direct path to implementation, avoiding over-engineering.
+3. Identify MVP by selecting the essential tasks required to deliver a functional and usable product then prioritize to complete first.
+4. Order tasks logically, considering dependencies and implementation sequence.
+5. Start with foundation and core functionality, then move to advanced features.
+6. Provide a clear validation/testing approach for each task.
+7. Set appropriate dependency IDs (tasks can only depend on lower-numbered tasks).
+8. Assign priority based on criticality and dependency order.
+9. Include detailed implementation guidance in the "details" field.
+10. Strictly adhere to any specific requirements for libraries, database schemas, frameworks, tech stacks, or other implementation details mentioned in the PRD.
+11. Fill in gaps left by the PRD while preserving all explicit requirements.
+12. Provide the most direct path to implementation, avoiding over-engineering.
 
 ### Output:
 Return a JSON object with the following structure:

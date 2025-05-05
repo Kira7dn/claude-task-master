@@ -114,22 +114,46 @@ function getProjectRootFromSession(session, log) {
 		if (session?.roots?.[0]?.uri) {
 			const rootUri = session.roots[0].uri;
 			log.info(`Found rootUri in session.roots[0].uri: ${rootUri}`);
-			const rootPath = rootUri.startsWith('file://')
-				? decodeURIComponent(rootUri.slice(7))
-				: rootUri;
-			log.info(`Decoded rootPath: ${rootPath}`);
-			return rootPath;
+			const rootPath = (() => {
+				try {
+					return decodeURIComponent(
+						rootUri.startsWith('file://') ? rootUri.slice(7) : rootUri
+					);
+				} catch (e) {
+					log.error(`Failed to decode URI: ${rootUri}. Error: ${e.message}`);
+					return rootUri;
+				}
+			})();
+
+			if (fs.existsSync(rootPath)) {
+				log.info(`Validated rootPath exists: ${rootPath}`);
+				return rootPath;
+			} else {
+				log.warn(`Decoded rootPath does not exist: ${rootPath}`);
+			}
 		}
 
 		// If we have a session with roots.roots array (different structure)
 		if (session?.roots?.roots?.[0]?.uri) {
 			const rootUri = session.roots.roots[0].uri;
 			log.info(`Found rootUri in session.roots.roots[0].uri: ${rootUri}`);
-			const rootPath = rootUri.startsWith('file://')
-				? decodeURIComponent(rootUri.slice(7))
-				: rootUri;
-			log.info(`Decoded rootPath: ${rootPath}`);
-			return rootPath;
+			const rootPath = (() => {
+				try {
+					return decodeURIComponent(
+						rootUri.startsWith('file://') ? rootUri.slice(7) : rootUri
+					);
+				} catch (e) {
+					log.error(`Failed to decode URI: ${rootUri}. Error: ${e.message}`);
+					return rootUri;
+				}
+			})();
+
+			if (fs.existsSync(rootPath)) {
+				log.info(`Validated rootPath exists: ${rootPath}`);
+				return rootPath;
+			} else {
+				log.warn(`Decoded rootPath does not exist: ${rootPath}`);
+			}
 		}
 
 		// Get the server's location and try to find project root -- this is a fallback necessary in Cursor IDE
@@ -271,8 +295,8 @@ function executeTaskMasterCommand(
 			const errorOutput = result.stderr
 				? result.stderr.trim()
 				: result.stdout
-				? result.stdout.trim()
-				: 'Unknown error';
+					? result.stdout.trim()
+					: 'Unknown error';
 			throw new Error(
 				`Command failed with exit code ${result.status}: ${errorOutput}`
 			);
@@ -430,9 +454,9 @@ function createContentResponse(content) {
 				text:
 					typeof content === 'object'
 						? // Format JSON nicely with indentation
-						  JSON.stringify(content, null, 2)
+							JSON.stringify(content, null, 2)
 						: // Keep other content types as-is
-						  String(content)
+							String(content)
 			}
 		]
 	};
